@@ -1,0 +1,51 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Relatório de Clientes</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Selecione o período para gerar o relatório</h6>
+        <hr>
+
+        <form [formGroup]="formRelatorio" (ngSubmit)="onSubmit()">
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Data de início:</label>
+                    <input type="date" class="form-control" formControlName="dataMin"/>
+
+                    <div class="text-danger" *ngIf="form.dataMin.touched && form.dataMin.invalid">
+                        <span *ngIf="form.dataMin.errors.required">
+                            Por favor, informe a data de início da pesquisa.
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <label>Data de término:</label>
+                    <input type="date" class="form-control" formControlName="dataMax"/>
+
+                    <div class="text-danger" *ngIf="form.dataMax.touched && form.dataMax.invalid">
+                        <span *ngIf="form.dataMax.errors.required">
+                            Por favor, informe a data de fim da pesquisa.
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-12">
+
+                    <button type="submit" class="btn btn-success" [disabled]="!formRelatorio.valid">
+                        Gerar Relatório
+                    </button>
+                    &nbsp;
+                    <button type="button" class="btn btn-outline-secondary">
+                        Cancelar
+                    </button>
+
+                </div>
+            </div>
+
+        </form>
+        
+      </div>
+</div>

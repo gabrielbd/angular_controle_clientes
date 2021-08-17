@@ -1,0 +1,140 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Consulta de Clientes</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Listagem de clientes cadastrados</h6>
+        <hr>
+
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Nome do Cliente</th>
+                    <th>Email</th>
+                    <th>Data de Cadastro</th>
+                    <th>Operações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of clientes | paginate : { itemsPerPage : 5, currentPage: pagina }">
+                    <td>{{item.nome}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.dataCadastro | date : 'dd/MM/yyyy HH:mm'}}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#janela-edicao"
+                            (click)="solicitarEdicao(item)">
+                            Alterar
+                        </button>
+                        &nbsp;
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#janela-exclusao"
+                            (click)="solicitarExclusao(item.idCliente)">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+                        Quantidade de registros: {{clientes.length}}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <pagination-controls
+            (pageChange)="handlePageChange($event)"
+            previousLabel="Página anterior"
+            nextLabel="Próxima página">            
+        </pagination-controls>
+
+    </div>
+</div>
+
+<!-- janela modal para edição -->
+<div id="janela-edicao" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alterar dados do Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="formEdicao" (ngSubmit)="onSubmit()">
+
+                    <!-- campo oculto -->
+                    <input type="hidden" formControlName="idCliente" />
+
+                    <label>Nome do Cliente:</label>
+                    <input type="text" class="form-control" formControlName="nome" />
+
+                    <div class="text-danger" *ngIf="form.nome.touched && form.nome.invalid">
+                        <span *ngIf="form.nome.errors.required">
+                            Por favor, informe o nome do cliente.
+                        </span>
+                        <span *ngIf="form.nome.errors.minlength">
+                            Por favor, informe no mínimo 6 caracteres.
+                        </span>
+                        <span *ngIf="form.nome.errors.maxlength">
+                            Por favor, informe no máximo 150 caracteres.
+                        </span>
+                    </div>
+
+                    <br />
+
+                    <label>Email do Cliente:</label>
+                    <input type="text" class="form-control" formControlName="email" />
+
+                    <div class="text-danger" *ngIf="form.email.touched && form.email.invalid">
+                        <span *ngIf="form.email.errors.required">
+                            Por favor, informe o email do cliente.
+                        </span>
+                        <span *ngIf="form.email.errors.email">
+                            Por favor, informe um endereço de email válido.
+                        </span>
+                    </div>
+
+                    <br />
+
+                    <button type="submit" class="btn btn-primary"
+                        data-bs-dismiss="modal"
+                        [disabled]="!formEdicao.valid">
+                        Salvar alterações
+                    </button>
+                    &nbsp;
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary">
+                        Cancelar
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- janela modal para exclusão -->
+<div id="janela-exclusao" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Excluir Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Deseja realmente excluir o cliente selecionado?
+                </p>
+
+                <button type="button" (click)="confirmarExclusao()" data-bs-dismiss="modal" class="btn btn-danger">
+                    Confirmar Exclusão
+                </button>
+                &nbsp;
+                <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary">
+                    Cancelar
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

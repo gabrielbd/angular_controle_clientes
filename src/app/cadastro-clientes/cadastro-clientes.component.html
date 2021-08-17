@@ -1,0 +1,64 @@
+<div *ngIf="mensagem" class="alert alert-primary mb-3" role="alert">
+    <strong>{{mensagem}}</strong>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Cadastro de Clientes</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Preencha o formulário para cadastrar clientes</h6>
+        <hr>
+
+        <form [formGroup]="formCadastro" (ngSubmit)="onSubmit()">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Nome do Cliente:</label>
+                    <input type="text" class="form-control" formControlName="nome" placeholder="Ex: João da Silva" />
+
+                    <div class="text-danger" *ngIf="form.nome.touched && form.nome.invalid">
+                        <span *ngIf="form.nome.errors.required">
+                            Por favor, informe o nome do cliente.
+                        </span>
+                        <span *ngIf="form.nome.errors.minlength">
+                            Por favor, informe no mínimo 6 caracteres.
+                        </span>
+                        <span *ngIf="form.nome.errors.maxlength">
+                            Por favor, informe no máximo 150 caracteres.
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <label>Email do Cliente:</label>
+                    <input type="text" class="form-control" formControlName="email"
+                        placeholder="Ex: joaodasilva@gmail.com" />
+
+                    <div class="text-danger" *ngIf="form.email.touched && form.email.invalid">
+                        <span *ngIf="form.email.errors.required">
+                            Por favor, informe o email do cliente.
+                        </span>
+                        <span *ngIf="form.email.errors.email">
+                            Por favor, informe um endereço de email válido.
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-12">
+
+                    <button type="submit" class="btn btn-success" [disabled]="!formCadastro.valid">
+                        Realizar Cadastro
+                    </button>
+                    &nbsp;
+                    <button type="button" class="btn btn-outline-secondary">
+                        Cancelar
+                    </button>
+
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
